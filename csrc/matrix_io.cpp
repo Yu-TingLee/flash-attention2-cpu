@@ -1,4 +1,4 @@
-#include "flash_attn/matrix_io.hpp"
+#include "matrix_io.hpp"
 
 #include <cstdint>
 #include <fstream>

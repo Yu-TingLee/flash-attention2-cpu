@@ -4,7 +4,7 @@
 #include <cmath>
 #include <limits>
 
-#include "flash_attn/flash_attention.hpp"
+#include "flash_attention.hpp"
 
 namespace flash_attn {
 

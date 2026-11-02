@@ -42,23 +42,23 @@ target_link_options(flash_attn_compile_options INTERFACE
     $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-ffast-math>
 )
 
-add_library(flash_attn_io STATIC src/matrix_io.cpp)
-target_include_directories(flash_attn_io PUBLIC include)
+add_library(flash_attn_io STATIC csrc/matrix_io.cpp)
+target_include_directories(flash_attn_io PUBLIC csrc)
 target_link_libraries(flash_attn_io PUBLIC Eigen3::Eigen flash_attn_compile_options)
 
 # The single-threaded kernels are built without OpenMP so that Eigen does not
 # parallelize their matrix products.
 add_library(flash_attn_st STATIC
-    src/naive_attention.cpp
-    src/flash_attention.cpp
-    src/flash_attention_profile.cpp
+    csrc/naive_attention.cpp
+    csrc/flash_attention.cpp
+    csrc/flash_attention_profile.cpp
 )
 target_link_libraries(flash_attn_st PUBLIC flash_attn_io)
 
-add_library(flash_attn_mt STATIC src/flash_attention_mt.cpp)
+add_library(flash_attn_mt STATIC csrc/flash_attention_mt.cpp)
 target_link_libraries(flash_attn_mt PUBLIC flash_attn_io OpenMP::OpenMP_CXX)
 
-add_library(flash_attn_causal_mt STATIC src/flash_attention_causal_mt.cpp)
+add_library(flash_attn_causal_mt STATIC csrc/flash_attention_causal_mt.cpp)
 target_link_libraries(flash_attn_causal_mt PUBLIC flash_attn_st OpenMP::OpenMP_CXX)
 target_link_libraries(flash_attn_causal_mt PRIVATE Threads::Threads)
 

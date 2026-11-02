@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <chrono>
 
+#include "flash_attention.hpp"
 #include "flash_attention_block.hpp"
-#include "flash_attn/flash_attention.hpp"
 
 namespace flash_attn {
 

@@ -5,8 +5,8 @@
 #include <memory>
 #include <thread>
 
+#include "flash_attention.hpp"
 #include "flash_attention_block.hpp"
-#include "flash_attn/flash_attention.hpp"
 #include "work_stealing_queue.hpp"
 
 namespace flash_attn {

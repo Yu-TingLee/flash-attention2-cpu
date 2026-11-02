@@ -4,8 +4,8 @@ import os
 import numpy as np
 
 from benchmarks.bench_utils import RuntimeLog
-from flash_attn.flash_attention_profile import fa2_forward_profile
-from flash_attn.testset import load_testset
+from pyimpl.flash_attention_profile import fa2_forward_profile
+from pyimpl.testset import load_testset
 
 
 def main():

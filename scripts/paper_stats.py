@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-
 from plot import SCHEDULES, best, fa2_mt, naive, profile_shares, sdpa
 
 pd.set_option("display.width", 200)

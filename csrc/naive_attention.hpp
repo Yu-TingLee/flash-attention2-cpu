@@ -1,5 +1,5 @@
 #pragma once
-#include "flash_attn/types.hpp"
+#include "types.hpp"
 
 namespace flash_attn {
 

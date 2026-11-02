@@ -18,17 +18,50 @@ FlashAttention has revolutionized transformer training and inference on GPU by m
   <em>Figure 1: Computation of the FlashAttention-2 forward kernel.</em>
 </p>
 
+Results
+------------
+We benchmark on Intel Core i9-11900K (8 cores / 16 threads, AVX-512) with GCC 11 and Eigen 5.0.1.
+### Self-Attention
+
+FA-2 is on par with SDPA for T ≥ 2K (0.93–0.99×) and up to 1.60× faster at T = 1K.
+
+<p align="center">
+  <img src="./images/speedup_self.png" width="60%">
+  <br>
+  <em>Figure 2: Speedup over PyTorch SDPA, self-attention (log scale). The gray line is single-threaded standard attention.</em>
+</p>
+
+### Masked Attention
+
+FA-2 is the fastest at every T: 1.39–1.69× faster than SDPA for T ≥ 2K, up to 1.89× at T = 1K. FA-2 skips the key blocks above the diagonal; SDPA does not get faster with the mask.
+
+<p align="center">
+  <img src="./images/speedup_masked.png" width="60%">
+  <br>
+  <em>Figure 3: Speedup over PyTorch SDPA, masked attention (log scale). Legend as in Figure 2.</em>
+</p>
+
+Static scheduling splits the rows evenly, so the thread with the last rows does most of the masked triangle. Dynamic and work-stealing scheduling are 1.18–1.43× faster than static for T ≥ 2K (8 threads); work stealing is slower at T = 512, where there are too few blocks to steal.
+
+<p align="center">
+  <img src="./images/schedules.png" width="60%">
+  <br>
+  <em>Figure 4: Speedup of each scheduling strategy for masked FA-2 over static scheduling with 8 threads.</em>
+</p>
+
+<p align="center">
+  <img src="./images/mt_profile_masked.png" width="60%">
+  <br>
+  <em>Figure 5: Share of total thread time (%) per step of masked FA-2, T = 8K, M = 32 KiB, averaged over 8 and 16 threads. Line numbers refer to Algorithm 1 in the report. Idle is time spent waiting for the slowest thread: 45–46% with static scheduling, 2–5% with dynamic and work stealing.</em>
+</p>
+
 Repository Layout
 ------------
 ```
-include/flash_attn/   C++ API: naive attention, FA-2 kernels, matrix I/O
-src/                  C++ kernels (serial, OpenMP, causal schedulers, profiling)
-flash_attn/           NumPy and Numba implementations
-benchmarks/           Benchmark drivers for each implementation and PyTorch SDPA
-data_generation.py    Random Q, K, V test sets
-plot.py               Paper figures from the benchmark logs
-paper_stats.py        Every number quoted in the paper's results
-run.sh                Full benchmark sweep
+csrc/         C++ kernels: standard attention, FA-2 (serial, OpenMP, masked schedulers, profiling), matrix I/O
+pyimpl/       NumPy and Numba implementations
+benchmarks/   Benchmark drivers for each implementation and PyTorch SDPA
+scripts/      Test set generation, full benchmark sweep (run.sh), paper figures (plot.py), paper numbers (paper_stats.py)
 ```
 
 Dependencies
@@ -40,9 +73,9 @@ Usage
 -----
 ```bash
 cmake -S . -B build -DCMAKE_CXX_COMPILER=g++-11 && cmake --build build --parallel
-bash run.sh
+bash scripts/run.sh
 ```
 
-Logs go to `outputs/<impl>/runtime.csv`; plots go to `plots/`. `python paper_stats.py` prints the numbers quoted in the paper.
+Run from the repo root. Logs go to `outputs/<impl>/runtime.csv`; plots go to `plots/`. `python scripts/paper_stats.py` prints the numbers quoted in the paper.
 
 Each benchmark resumes from existing CSV entries if interrupted.

@@ -5,8 +5,8 @@ import time
 import numpy as np
 
 from benchmarks.bench_utils import RuntimeLog, print_runtime
-from flash_attn.naive_attention import naive_attention_causal
-from flash_attn.testset import load_testset
+from pyimpl.naive_attention import naive_attention_causal
+from pyimpl.testset import load_testset
 
 
 def main():

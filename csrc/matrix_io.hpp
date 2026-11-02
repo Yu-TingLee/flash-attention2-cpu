@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "flash_attn/types.hpp"
+#include "types.hpp"
 
 namespace flash_attn {
 

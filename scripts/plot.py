@@ -228,34 +228,34 @@ def self_legend(ax):
     return [h[0], h[2], h[1], h[3]]
 
 
-def runtime_vs_sdpa(causal):
+def compare_figure(causal, name, scale, ticks, ylim=None):
+    """FA-2, SDPA and naive lines per d; runtime or speedup depending on `scale`."""
     with plt.rc_context(COL_RC):
         fig, axes = fixed_panels(legend_rows=0 if causal else 2)
         for ax, d in zip(axes, (64, 128)):
-            compare_lines(ax, causal, d, lambda r: r * 1e3)
+            compare_lines(ax, causal, d, scale)
             t_axis(ax)
-            log_y(ax, [0.3, 1, 3, 10, 30, 100, 300])
+            log_y(ax, ticks)
+            if ylim:
+                ax.set_ylim(*ylim)
             ax.set_xlabel("Sequence length $T$")
             ax.set_title(f"$d = {d}$")
         if not causal:
             fixed_legend(fig, self_legend(axes[0]), ncol=2)
-        save(fig, f"fa2_vs_sdpa_runtime_{case_name(causal)}.png")
+        save(fig, f"{name}_{case_name(causal)}.png")
+
+
+def runtime_vs_sdpa(causal):
+    compare_figure(
+        causal, "fa2_vs_sdpa_runtime", lambda r: r * 1e3, [0.3, 1, 3, 10, 30, 100, 300]
+    )
 
 
 def speedup_over_sdpa(causal):
     base = best(sdpa(causal)).runtime
-    with plt.rc_context(COL_RC):
-        fig, axes = fixed_panels(legend_rows=0 if causal else 2)
-        for ax, d in zip(axes, (64, 128)):
-            compare_lines(ax, causal, d, lambda r: base / r)
-            t_axis(ax)
-            log_y(ax, [0.05, 0.1, 0.2, 0.5, 1, 2])
-            ax.set_ylim(0.04, 2.6)
-            ax.set_xlabel("Sequence length $T$")
-            ax.set_title(f"$d = {d}$")
-        if not causal:
-            fixed_legend(fig, self_legend(axes[0]), ncol=2)
-        save(fig, f"speedup_{case_name(causal)}.png")
+    compare_figure(
+        causal, "speedup", lambda r: base / r, [0.05, 0.1, 0.2, 0.5, 1, 2], (0.04, 2.6)
+    )
 
 
 def schedules():

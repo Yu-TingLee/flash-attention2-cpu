@@ -1,5 +1,5 @@
 #include "bench_utils.hpp"
-#include "flash_attn/flash_attention.hpp"
+#include "flash_attention.hpp"
 
 int main(int argc, char** argv) {
   const int T = arg_int(argc, argv, "--T", 1024);

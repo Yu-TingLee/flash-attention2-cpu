@@ -5,8 +5,8 @@ import time
 import numpy as np
 
 from benchmarks.bench_utils import RuntimeLog, print_runtime
-from flash_attn.flash_attention import fa2_forward
-from flash_attn.testset import load_testset
+from pyimpl.flash_attention import fa2_forward
+from pyimpl.testset import load_testset
 
 
 def main():

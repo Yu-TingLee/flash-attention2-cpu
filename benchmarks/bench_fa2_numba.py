@@ -5,7 +5,7 @@ import time
 import numpy as np
 
 from benchmarks.bench_utils import RuntimeLog, print_runtime
-from flash_attn.testset import load_testset
+from pyimpl.testset import load_testset
 
 
 def load_contiguous(data_dir, T, d):
@@ -32,7 +32,7 @@ def main():
     import numba
 
     numba.set_num_threads(args.num_threads)
-    from flash_attn.flash_attention_numba import fa2_forward
+    from pyimpl.flash_attention_numba import fa2_forward
 
     log = RuntimeLog(
         f"fa2_numba_t{args.num_threads}",

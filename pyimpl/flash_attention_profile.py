@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 
-from flash_attn.flash_attention import block_sizes
+from pyimpl.flash_attention import block_sizes
 
 
 def fa2_forward_profile(Q, Kt, V, T, d, M_bytes, scale):

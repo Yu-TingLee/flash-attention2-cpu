@@ -88,7 +88,7 @@ run_profile_mt() {
   done
 }
 
-python data_generation.py --T 8192 --d 128 --num_testsets "$NUM_TESTSETS"
+python scripts/data_generation.py --T 8192 --d 128 --num_testsets "$NUM_TESTSETS"
 
 for_each_t_d run_naive
 for_each_t_d run_sdpa
@@ -96,4 +96,4 @@ for_each_t_d run_fa2
 for_each_t_d run_fa2_causal
 run_profile_mt
 
-python plot.py
+python scripts/plot.py

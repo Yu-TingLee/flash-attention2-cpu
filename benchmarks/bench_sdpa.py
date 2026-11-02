@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from torch.nn.attention import SDPBackend, sdpa_kernel
 
 from benchmarks.bench_utils import RuntimeLog, print_runtime
-from flash_attn.testset import load_testset
+from pyimpl.testset import load_testset
 
 
 def load_tensors(data_dir, T, d):

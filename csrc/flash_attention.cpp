@@ -1,4 +1,4 @@
-#include "flash_attn/flash_attention.hpp"
+#include "flash_attention.hpp"
 
 #include "flash_attention_block.hpp"
 

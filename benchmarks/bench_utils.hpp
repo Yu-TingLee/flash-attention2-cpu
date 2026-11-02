@@ -12,8 +12,8 @@
 #include <utility>
 #include <vector>
 
-#include "flash_attn/flash_attention.hpp"
-#include "flash_attn/matrix_io.hpp"
+#include "flash_attention.hpp"
+#include "matrix_io.hpp"
 
 inline int arg_int(int argc, char** argv, const std::string& key, int def) {
   for (int i = 1; i + 1 < argc; ++i) {

@@ -1,4 +1,4 @@
-#include "flash_attn/naive_attention.hpp"
+#include "naive_attention.hpp"
 
 #include <limits>
 
